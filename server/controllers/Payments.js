@@ -32,7 +32,7 @@ exports.capturePayment=async(req,res)=>{
         //user already paid for that course
         const uid=new mongoose.Types.ObjectId(userId);
         if(course.studentsEnrolled.includes(uid)){
-            return res.status(400).json({
+            return res.status(200).json({
                 success:false,
                 message:"Student already enrolled"
             })
@@ -79,7 +79,7 @@ exports.capturePayment=async(req,res)=>{
 //verify signature
 exports.verifySignature=async(req,res)=>{
     const webhookSecret="12345678";
-    const signature=req.headers("x-razorpay-signature");
+    const signature=req.headers["x-razorpay-signature"];
     //steps
     const shasum=crypto.createHmac("sha256",webhookSecret);//1
     shasum.update(JSON.stringify(req.body));//2

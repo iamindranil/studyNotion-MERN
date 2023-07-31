@@ -16,13 +16,13 @@ exports.resetPasswordtoken=async(req,res)=>{
             })
         }
         //token gen
-        const token=crypto.randomUUID();
+        const token=crypto.randomBytes(20).toString("hex");
         //update user by adding token and expiration time
         const updatedDetails=await User.findOneAndUpdate(
                                             {email:email},
                                             {
                                                 token:token,
-                                                resetPasswordExpires:Date.now()+5*60*100,
+                                                resetPasswordExpires:Date.now()+3600000,
                                             },
                                             {new:true});
         //create url
@@ -51,7 +51,7 @@ exports.resetPassword=async(req,res)=>{
         if(password!==confirmedPassword){
             return res.status(400).json({
                 success:false,
-                message:"password mismatched!"
+                message:"Password and Confirm Password Does not Match"
             })
         }
         //get user details from db uing token
@@ -67,7 +67,7 @@ exports.resetPassword=async(req,res)=>{
         if(userDetails.resetPasswordExpires<Date.now()){
             return res.json({
                 success:false,
-                message:"session expired...please regenerate your token"
+                message:"Token expired...please regenerate your token"
             })
         }
         //hash pwd
