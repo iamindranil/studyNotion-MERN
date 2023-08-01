@@ -103,7 +103,7 @@ exports.getAverageRating=async(req,res)=>{
     }
 }
 //getAllRatingandReviews
-exports.getAllRatingandReviews=async(req,res)=>{
+exports.getAllRating=async(req,res)=>{
     try{
         const allReviews=await RatingAndReview.find({})
                                 .sort({rating:"desc"})
