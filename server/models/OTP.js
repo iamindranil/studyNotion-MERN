@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 const mailSender = require("../utils/mailSender");
-const emailTemplate=require("../mail/templates/emailVerificationTemplate");
+const emailTemplate=require("../mail/templates/emailVerificationTemplate"); 
 const OTPSchema=new mongoose.Schema({
     email:{
         type:String,
@@ -27,16 +27,16 @@ async function sendVerificationEmail(email,otp){
         const mailResponse=await mailSender(email,"Verification Email from StudyNotion",emailTemplate(otp))
         console.log("Email sent Successfully: ",mailResponse)
     }catch(err){
-        console.log("error occured while sending mails: ",err)
+        console.log("error occured while sending mails: ",err) 
         throw err;
     }
 }
-//Define a post hook to send email after the document has been saved
+//Define a pre middileware  to send email after the document has been saved
 OTPSchema.pre("save",async function(next){
     console.log("New document saved to database")
     //only send an email when a new document is created
     if(this.isNew)await sendVerificationEmail(this.email,this.otp);
     next();
-})
+})  
 
 module.exports=mongoose.model("OTP",OTPSchema);

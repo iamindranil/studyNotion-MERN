@@ -5,7 +5,7 @@ const mailSender=require("../utils/mailSender");
 const{courseEnrollmentEmail}=require("../mail/templates/courseEnrollmentEmail");
 const { default: mongoose } = require("mongoose");
 
-
+  
 //capture the payment
 exports.capturePayment=async(req,res)=>{
     try{
@@ -81,7 +81,7 @@ exports.verifySignature=async(req,res)=>{
     const webhookSecret="12345678";
     const signature=req.headers["x-razorpay-signature"];
     //steps
-    const shasum=crypto.createHmac("sha256",webhookSecret);//1
+    const shasum=crypto.createHmac("sha256",webhookSecret);//1(hmac- hashed based msg auth-N code)
     shasum.update(JSON.stringify(req.body));//2
     const digest=shasum.digest("hex");//3
 

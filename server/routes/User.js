@@ -10,7 +10,7 @@ const {
   changePassword,
 } = require("../controllers/Auth")
 const {
-  resetPasswordToken,
+  resetPasswordtoken,
   resetPassword,
 } = require("../controllers/ResetPassword")
 
@@ -45,9 +45,7 @@ router.post("/changepassword", auth, changePassword)
 // ********************************************************************************************************
 
 // Route for generating a reset password token
-router.post("/reset-password-token",(req,res)=>{
-    resetPasswordToken(req,res)
-})
+router.post("/reset-password-token", resetPasswordtoken)
 
 // Route for resetting user's password after verification
 router.post("/reset-password", resetPassword)

@@ -8,19 +8,20 @@ exports.auth=async(req,res,next)=>{
         //extract token
         const token=req.cookies.token
                     ||req.body.token
-                    ||req.header("Authorisation").replace("Bearer ","");
+                    ||req.header("Authorisation").replace("Bearer ", ""); 
         //if missing toke return res
-        if(!token){
+        if(!token){ 
             return res.status(401).json({
                 success:false,
                 message:"token missing"
 
             })
         }
+        
         //verify the token
         try{
             const decode=jwt.verify(token,process.env.JWT_SECRET)
-            req.user=decode;
+            req.user=decode; 
         }catch(err){
             return res.status(401).json({
                 success:false,
@@ -32,8 +33,8 @@ exports.auth=async(req,res,next)=>{
     }catch(err){
         return res.status(401).json({
             success:false,
-            message:"something ent wrong while validating the token"
-
+            message:'Something went wrong while validating the token',
+            message:err.message
         })
     }
 }
@@ -71,8 +72,7 @@ exports.isInstructor=async(req,res,next)=>{
     }catch(err){
         return res.status(401).json({
             success:false,
-            message:"User role cannot be verified,please try again"
-
+            message:"User role cannot be verified,please try again",
         })
     }
 }
@@ -83,7 +83,7 @@ exports.isAdmin=async(req,res,next)=>{
         if(req.user.accountType!=="Admin"){
             return res.status(401).json({
                 success:false,
-                message:"It's protected route for Admin   only"
+                message:"It's protected route for Admin only"
             })
         }
         next();

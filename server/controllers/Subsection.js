@@ -3,18 +3,19 @@ const Section=require("../models/Section");
 const{uploadImageToCloudinary}=require("../utils/imageUploader");
 require("dotenv").config();
 //create Subsection
-exports.createSubsection=async(req,res)=>{
+exports.createSubSection=async(req,res)=>{
     try{
         //fetch data from req body
         const{sectionId,title,timeDuration,description}=req.body;
         //extract file/video
-        const video=req.files.videoFile;
+        const video=req.files.video;
         //validation
         if(!sectionId
-            ||title
-            ||timeDuration
+            ||!title
+            ||!timeDuration
             ||!description
-            ||!video){
+            ||!video
+            ){
                 return res.status(400).json({
                     success:false,
                     message:"All fields are required"
@@ -22,7 +23,7 @@ exports.createSubsection=async(req,res)=>{
             }
         //upload video to cloudinary
         const uploadDetails=await uploadImageToCloudinary(video,process.env.FOLDER_NAME);
-        //create a subsection
+        //create a subsection 
         const SubSectionDetails=await SubSection.create({
             title:title,
             timeDuration:timeDuration,
@@ -35,7 +36,7 @@ exports.createSubsection=async(req,res)=>{
                                                 {
                                                     $push:{subSection:SubSectionDetails._id}
                                                 },
-                                                {new:true}).populate("SubSection");
+                                                {new:true}).populate("subSection");
     
         //TODO: log updated section here,after adding populate query                                            )
         return res.status(200).json({
@@ -46,7 +47,6 @@ exports.createSubsection=async(req,res)=>{
         //return res  
         
     }catch(err){
-		console.error("Error creating new sub-section:", error);
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",

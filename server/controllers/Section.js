@@ -15,6 +15,7 @@ exports.createSection=async(req,res)=>{
         }
         //create section
         const newSection=await Section.create({sectionName})
+        console.log(newSection);
         //update course with section ObjectID
         const updatedCourse=await Course.findByIdAndUpdate(
                                                          courseId,
@@ -32,11 +33,11 @@ exports.createSection=async(req,res)=>{
                                                                 }
                                                         }).exec();
         //TODO: use populate to replace sections/subsections both in updatedCourseDetails
-        //return response
+        //return response 
         return res.status(200).json({
             success:true,
             message:"Section created successfully!",
-            updatedCourseDetails
+            updatedCourse
         })
     }catch(err){
         return res.status(500).json({
@@ -75,7 +76,7 @@ exports.updateSection=async(req,res)=>{
 exports.deleteSection=async(req,res)=>{
     try{
         //get id--assuming that we are sending id in params
-        const {sectionId}=req.params
+        const {sectionId}=req.body
         //delete it
         await Section.findByIdAndDelete(sectionId);
         //TODO: do we need to delete the entry from course schema???

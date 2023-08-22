@@ -14,7 +14,7 @@ const {
 
 // Categories Controllers Import
 const {
-  showAllCategories,
+  showAllCategory,
   createCategory, 
   categoryPageDetails,
 } = require("../controllers/Category")
@@ -68,29 +68,19 @@ router.post("/deleteSubSection",(req,res)=>{
     deleteSubSection(req,res)
 })
 // Add a Sub Section to a Section
-router.post("/addSubSection",(req,res)=>{
-    auth(req,res), 
-    isInstructor(req,res), 
-    createSubSection(req,res)
-})
+router.post("/addSubSection", auth, isInstructor, createSubSection) 
 // Get all Registered Courses
 router.get("/getAllCourses", getAllCourses)
-// Get Details for a Specific Courses
-router.post("/getCourseDetails", getCourseDetails)
+// Get Details for a Specific Courses 
+router.get("/getCourseDetails", getCourseDetails)
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)
 // ********************************************************************************************************
 // Category can Only be Created by Admin
 // TODO: Put IsAdmin Middleware here
-router.post("/createCategory",(req,res)=>{
-    auth(req,res), 
-    isAdmin(req,res), 
-    createCategory(req,res)
-})
-router.get("/showAllCategories",(req,res)=>{
-    showAllCategories(req,res)
-})
+router.post("/createCategory", auth, isAdmin, createCategory)
+router.get("/showAllCategories", showAllCategory)
 router.post("/getCategoryPageDetails", categoryPageDetails)
 
 // ********************************************************************************************************

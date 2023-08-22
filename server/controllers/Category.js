@@ -3,7 +3,7 @@ const Category = require("../models/Category");
 
 
 //create Tag Handler fun^n
-exports.createCatagory=async(req,res)=>{
+exports.createCategory=async(req,res)=>{
     try{
         //fetch data
         const{name,description}=req.body;
@@ -15,7 +15,7 @@ exports.createCatagory=async(req,res)=>{
             })
         }
         //create entry in DB
-        const categoryDetails=await Catagory.create({
+        const categoryDetails=await Category.create({
             name:name,
             description:description
         })
@@ -34,9 +34,9 @@ exports.createCatagory=async(req,res)=>{
 
 //getAllCatagory
 
-exports.showAllCatagory=async(req,res)=>{
+exports.showAllCategory=async(req,res)=>{
      try{
-        const allCatagory=await Catagory.find({},{name:true,description:true})
+        const allCatagory=await Category.find({},{name:true,description:true})
         return res.status(200).json({
             success:true,
             message:"All tags returned Successfully!",

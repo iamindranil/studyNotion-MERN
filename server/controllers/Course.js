@@ -19,7 +19,7 @@ exports.createCourse=async(req,res)=>{
            ||!tag
            ||!thumbnail
            ||!category){
-            return req.status(400).json({
+            return res.status(400).json({ 
                 success:false,
                 message:"All fields are necessary"
             })
@@ -49,15 +49,16 @@ exports.createCourse=async(req,res)=>{
             courseName,
             courseDescription,
             instructor:instructorDetails._id,
-            whatYouWillLearn,
+            whatYouWillLearn:whatYouWillLearn,
             price,
-			tag: tag,
+			tag:tag,
 			category: categoryDetails._id,
 			thumbnail: thumbnailImage.secure_url,
 			status: status,
 			instructions: instructions,
         })
         //add new course to user schema of instructor
+       
         await User.findByIdAndUpdate(
             {_id:instructorDetails._id},
             {
@@ -80,12 +81,13 @@ exports.createCourse=async(req,res)=>{
         //return res
         return res.status(200).json({
             success:true,
+            data:newCourse,
             message:"Course Created Successfully!"
         })
     }catch(err){
         return res.status(404).json({
             success:false,
-            message:"something went wrong while creating course "
+            message:err.message
         })
     }
 }

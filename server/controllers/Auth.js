@@ -7,13 +7,13 @@ const jwt=require("jsonwebtoken");
 require("dotenv").config();
 
 //send otp
-exports.sendOTP=async(req,res)=>{
+exports.sendotp=async(req,res)=>{
     try{
         //fetch email
         const{email}=req.body;
         //check if user already exists
         const checkUserPresent=await User.findOne({email});
-        //if user already exists,then return a response
+        // //if user already exists,then return a response
         if(checkUserPresent){
             return res.status(401).json({
                 success:false,
@@ -58,7 +58,7 @@ exports.sendOTP=async(req,res)=>{
 
 
 //signup
-exports.signUp=async(req,res)=>{
+exports.signup=async(req,res)=>{
     try{
         //data fetch
         const{
@@ -103,10 +103,12 @@ exports.signUp=async(req,res)=>{
                 success:false,
                 message:"OTP not found"
             })
-        }else if(otp!==recentOtp.otp){
+        }else if(otp!==recentOtp[0].otp){
+            console.log(otp);
+            console.log(recentOtp.otp);
             return res.status(400).json({
                 success:false,
-                message:"OTP mismatched"
+                message:"OTP mismatched"   
             })
         }
         //hash password
@@ -173,7 +175,7 @@ exports.login=async(req,res)=>{
                 accountType: user.accountType,
             }
             const token=jwt.sign(payload,process.env.JWT_SECRET,{
-                expiresIn:"2h"
+                 expiresIn:"2h"
             })
             user.token=token;
             user.password=undefined;
