@@ -82,7 +82,7 @@ const VerifyEmail = () => {
                     </Link>
                  </div>
                  <button  className="flex items-center text-blue-100 gap-x-2"
-                    onClick={()=>dispatch(sendotp(signupData.email))}
+                    onClick={()=>dispatch(sendotp(signupData.email,navigate))}
                  >
                     Resend it
                  </button>

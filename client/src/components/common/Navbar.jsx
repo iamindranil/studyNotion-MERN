@@ -42,7 +42,7 @@ const Navbar = () => {
   //   try{
   //     const result=await apiConnector("GET",categories.CATEGORIES_API);
   //     console.log("printing sublinks result: ",result)
-  //     // setSubLinks(result.data.data)
+  //     setSubLinks(result.data.data)
   //   }catch(err){
   //     console.log("could not fetch catalog list");
   //   }
@@ -145,7 +145,7 @@ const Navbar = () => {
           )}
 
           {
-            token!==null && <ProfileDropdown/> 
+            token!==null && <ProfileDropdown/>  
           }
         </div>
       </div>
@@ -154,3 +154,14 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+
+
+
+
+
+
+
+
