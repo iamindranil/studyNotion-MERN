@@ -22,7 +22,7 @@ export function updateDisplayPicture(token, formData) {
         formData,
         {
           "Content-Type": "multipart/form-data",
-          Authorisation: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         }
       )
       console.log(
