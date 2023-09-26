@@ -73,7 +73,7 @@ exports.signup=async(req,res)=>{
         }=req.body;
         //validate
         if(!firstName||!lastName||!email||!password||
-            !confirmPassword||!accountType||!contactNumber||!otp){
+            !confirmPassword||!accountType||!otp){
                 return res.status(403).json({
                     success:false,
                     message:"All fields required"
@@ -104,8 +104,6 @@ exports.signup=async(req,res)=>{
                 message:"OTP not found"
             })
         }else if(otp!==recentOtp[0].otp){
-            console.log(otp);
-            console.log(recentOtp.otp);
             return res.status(400).json({
                 success:false,
                 message:"OTP mismatched"   

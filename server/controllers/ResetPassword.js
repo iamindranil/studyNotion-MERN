@@ -48,8 +48,6 @@ exports.resetPassword=async(req,res)=>{
     try{
         //data fetch
         const{password,confirmedPassword,token}=req.body;
-        console.log(password)
-        console.log(confirmedPassword)
         //validation
         if(password!==confirmedPassword){
             return res.status(400).json({
