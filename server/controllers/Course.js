@@ -2,6 +2,12 @@ const Course=require("../models/Course");
 const Category=require("../models/Category");
 const User=require("../models/User");
 const {uploadImageToCloudinary}=require("../utils/imageUploader");
+const Section=require("../models/Section")
+const SubSection=require("../models/SubSection");
+const CourseProgress = require("../models/CourseProgress");
+const { convertSecondsToDuration } = require("../utils/secToDuration")
+
+
 
 //createCourse Handler
 
@@ -268,11 +274,12 @@ exports.getFullCourseDetails = async (req, res) => {
         })
         .exec()
   
+
+        
       let courseProgressCount = await CourseProgress.findOne({
         courseID: courseId,
         userId: userId,
       })
-  
       console.log("courseProgressCount : ", courseProgressCount)
   
       if (!courseDetails) {
@@ -281,14 +288,14 @@ exports.getFullCourseDetails = async (req, res) => {
           message: `Could not find course with id: ${courseId}`,
         })
       }
-  
+      
       // if (courseDetails.status === "Draft") {
       //   return res.status(403).json({
       //     success: false,
       //     message: `Accessing a draft course is forbidden`,
       //   });
       // }
-  
+      
       let totalDurationInSeconds = 0
       courseDetails.courseContent.forEach((content) => {
         content.subSection.forEach((subSection) => {
@@ -296,9 +303,9 @@ exports.getFullCourseDetails = async (req, res) => {
           totalDurationInSeconds += timeDurationInSeconds
         })
       })
-  
+
       const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
-  
+      console.log(304)
       return res.status(200).json({
         success: true,
         data: {
@@ -327,7 +334,7 @@ exports.getInstructorCourses = async (req, res) => {
     try {
       // Get the instructor ID from the authenticated user or request body
       const instructorId = req.user.id
-  
+
       // Find all courses belonging to the instructor
       const instructorCourses = await Course.find({
         instructor: instructorId,
@@ -354,15 +361,15 @@ exports.getInstructorCourses = async (req, res) => {
 exports.deleteCourse = async (req, res) => {
     try {
       const { courseId } = req.body
-  
+
+      
       // Find the course
       const course = await Course.findById(courseId)
       if (!course) {
         return res.status(404).json({ message: "Course not found" })
       }
-  
       // Unenroll students from the course
-      const studentsEnrolled = course.studentsEnroled
+      const studentsEnrolled = course.studentsEnrolled
       for (const studentId of studentsEnrolled) {
         await User.findByIdAndUpdate(studentId, {
           $pull: { courses: courseId },
