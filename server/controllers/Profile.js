@@ -6,27 +6,26 @@ const{uploadImageToCloudinary}=require("../utils/imageUploader");
 exports.updateProfile=async(req,res)=>{
     try{
         //get data
-        const{dateOfBirth="",about="",contactNumber,gender}=req.body;
+        const{firstName = "",lastName = "",dateOfBirth="",about="",contactNumber,gender=""}=req.body;
         //get userId
         const id=req.user.id;
-        //validation
-        if(!contactNumber||!about||!dateOfBirth){
-            return res.status(400).json({
-                success:false,
-                message:"please provide all fields"
-            }) 
-        }
-        
 
         // Find the profile by id
 		const userDetails = await User.findById(id);
 		const profile = await Profile.findById(userDetails.additionalDetails);
 
+    const user = await User.findByIdAndUpdate(id, {
+      firstName,
+      lastName,
+    })
+    await user.save()
+    
+
 		// Update the profile fields
 		profile.dateOfBirth = dateOfBirth;
 		profile.about = about;
 		profile.contactNumber = contactNumber;
-
+    profile.gender = gender
 		// Save the updated profile
 		await profile.save();
 
