@@ -1,5 +1,7 @@
 const Category = require("../models/Category");
-
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max)
+}
 
 
 //create Tag Handler fun^n
@@ -37,10 +39,11 @@ exports.createCategory=async(req,res)=>{
 exports.showAllCategory=async(req,res)=>{
      try{
         const allCatagory=await Category.find()
+        console.log(allCatagory)
         return res.status(200).json({
             success:true,
             message:"All tags returned Successfully!",
-            allCatagory
+            data:allCatagory
         })
     }catch(err){
         return res.status(500).json({
@@ -52,41 +55,75 @@ exports.showAllCategory=async(req,res)=>{
 
 //categoryPageDetails
 exports.categoryPageDetails=async(req,res)=>{
-    try{
-        //get category id
-        const{categoryId}=req.body;
-        //get courses for specific category id
-        const selectedCategory=await Category.findById(categoryId)
-                                             .populate("courses")
-                                             .exec();
-        //validation
-        if(!selectedCategory){
-            return res.status(400).json({
-                success:false,
-                message:"Data not found!"
-            })
+    try {
+      console.log(57)
+        const { categoryId } = req.body
+    
+        // Get courses for the specified category
+        const selectedCategory = await Category.findById(categoryId)
+          .populate({
+            path: "courses",
+            match: { status: "Published" },
+            populate: "ratingAndReviews",
+          })
+          .exec()
+    
+        console.log("SELECTED COURSE", selectedCategory)
+        // Handle the case when the category is not found
+        if (!selectedCategory) {
+          console.log("Category not found.")
+          return res
+            .status(404)
+            .json({ success: false, message: "Category not found" })
         }
-        //get courses for different categories
-        const differentCategories=await Category.find({
-                                                         _id:{$ne:categoryId},
-                                                     })
-                                                     .populate("courses")
-                                                     .exec();
-        //get top selling courses
-
-        //return res
-        return res.status(200).json({
-            success:true,
-            data:{
-                selectedCategory,
-                differentCategories
-            }
+        // Handle the case when there are no courses
+        if (selectedCategory.courses.length === 0) {
+          console.log("No courses found for the selected category.")
+          return res.status(404).json({
+            success: false,
+            message: "No courses found for the selected category.",
+          })
+        }
+    
+        // Get courses for other categories
+        const categoriesExceptSelected = await Category.find({
+          _id: { $ne: categoryId },
         })
-    }catch(err){
-        console.log(err);
+        let differentCategory = await Category.findOne(
+          categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]
+            ._id
+        )
+          .populate({
+            path: "courses",
+            match: { status: "Published" },
+          })
+          .exec()
+        console.log()
+        // Get top-selling courses across all categories
+        const allCategories = await Category.find()
+          .populate({
+            path: "courses",
+            match: { status: "Published" },
+          })
+          .exec()
+        const allCourses = allCategories.flatMap((category) => category.courses)
+        const mostSellingCourses = allCourses
+          .sort((a, b) => b.sold - a.sold)
+          .slice(0, 10)
+    
+        res.status(200).json({
+          success: true,
+          data: {
+            selectedCategory,
+            differentCategory,
+            mostSellingCourses,
+          },
+        })
+      } catch (error) {
         return res.status(500).json({
-            success:false,
-            message:err.message
+          success: false,
+          message: "Internal server error",
+          error: error.message,
         })
-    }
+      }
 }

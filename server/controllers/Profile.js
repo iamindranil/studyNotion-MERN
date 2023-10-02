@@ -28,12 +28,14 @@ exports.updateProfile=async(req,res)=>{
     profile.gender = gender
 		// Save the updated profile
 		await profile.save();
-
+    const updatedUserDetails = await User.findById(id)
+      .populate("additionalDetails")
+      .exec()
         //return res
         return res.status(200).json({
             success:true,
             message:"profile updated successfully!",
-            profile
+            updatedUserDetails
         })
     }catch(err){
         return res.status(500).json({

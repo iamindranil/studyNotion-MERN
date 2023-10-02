@@ -19,26 +19,35 @@ exports.createCourse=async(req,res)=>{
             courseDescription,
             whatYouWillLearn,
             price,
-            // tag,
+            tag:_tag,
             category,
             status,
-            instructions}=req.body;
+            instructions:_instructions,
+          }=req.body;
         //get thumbnail
-        // const thumbnail=req.files.thumbnailImage;
+        const thumbnail=req.files.thumbnailImage;
+        const tag = JSON.parse(_tag)
+        const instructions = JSON.parse(_instructions)
         //validation
         if(!courseName
            ||!courseDescription
            ||!whatYouWillLearn
            ||!price
-        //    ||!tag
-        //    ||!thumbnail
-           ||!category){
+           ||!tag.length
+           ||!thumbnail
+           ||!category
+           ||!instructions.length){
             return res.status(400).json({ 
                 success:false,
                 message:"All fields are necessary"
             })
         }
-        console.log(34)
+        console.log(45)
+        if (!status || status === undefined) {
+          status = "Draft"
+        }
+
+
         //validation---->check for instructors
         const userId=req.user.id;
         const instructorDetails=await User.findById(userId,{accountType:"Instructor"});
@@ -60,7 +69,7 @@ exports.createCourse=async(req,res)=>{
             })
         }
         //upload image to cloudinary
-        // const thumbnailImage=await uploadImageToCloudinary(thumbnail,process.env.FOLDER_NAME);
+        const thumbnailImage=await uploadImageToCloudinary(thumbnail,process.env.FOLDER_NAME);
         //create entry of new course
         const newCourse=await Course.create({
             courseName,
@@ -68,11 +77,11 @@ exports.createCourse=async(req,res)=>{
             instructor:instructorDetails._id,
             whatYouWillLearn:whatYouWillLearn,
             price,
-			// tag:tag,
-			category: categoryDetails._id,
-			// thumbnail: thumbnailImage.secure_url,
-			status: status,
-			instructions: instructions,
+			      tag,
+			      category: categoryDetails._id,
+			      thumbnail: thumbnailImage.secure_url,
+			      status: status,
+			      instructions: instructions,
         })
         //add new course to user schema of instructor
        
