@@ -39,7 +39,6 @@ exports.createCategory=async(req,res)=>{
 exports.showAllCategory=async(req,res)=>{
      try{
         const allCatagory=await Category.find()
-        console.log(allCatagory)
         return res.status(200).json({
             success:true,
             message:"All tags returned Successfully!",
@@ -56,7 +55,7 @@ exports.showAllCategory=async(req,res)=>{
 //categoryPageDetails
 exports.categoryPageDetails=async(req,res)=>{
     try {
-      console.log(57)
+      // console.log(57)
         const { categoryId } = req.body
     
         // Get courses for the specified category
@@ -67,8 +66,9 @@ exports.categoryPageDetails=async(req,res)=>{
             populate: "ratingAndReviews",
           })
           .exec()
-    
-        console.log("SELECTED COURSE", selectedCategory)
+          console.log(69)
+          console.log(selectedCategory)
+        // console.log("SELECTED COURSE", selectedCategory)
         // Handle the case when the category is not found
         if (!selectedCategory) {
           console.log("Category not found.")
@@ -104,6 +104,9 @@ exports.categoryPageDetails=async(req,res)=>{
           .populate({
             path: "courses",
             match: { status: "Published" },
+            populate:{
+              path: "instructor"
+            },
           })
           .exec()
         const allCourses = allCategories.flatMap((category) => category.courses)
