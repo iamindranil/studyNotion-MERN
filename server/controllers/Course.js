@@ -215,11 +215,14 @@ exports.getAllCourses=async(req,res)=>{
 
 //getCourseDetails
 exports.getCourseDetails=async(req,res)=>{
+  console.log(req.body)
+    const {courseId}=req.body;
+    // const courseId="651acf98ea0fb2a10ab55d3b"
     try{
         //get id
-        const {courseId}=req.body;
+        console.log(courseId);
         //find course details
-        const courseDetails=await Course.find(
+        const courseDetails=await Course.findOne(
                                 {_id:courseId})
                                 .populate(
                                     {
@@ -237,7 +240,7 @@ exports.getCourseDetails=async(req,res)=>{
                                         path:"subSection"
                                     }
                                 })
-                                .exec();
+                                .exec();  
         //validation
         if(!courseDetails){
             return res.status(400).json({
@@ -246,13 +249,13 @@ exports.getCourseDetails=async(req,res)=>{
             })
         }
         //return res
-        return res.status(200).json({
+        return res.status(200).json({ 
             success:true,
             message:"Course Details fetched successfully!",
-            data:courseDetails
+            data:courseDetails 
         })
     }catch(err){
-        console.log(error);
+        console.log(err);
         return res.status(500).json({
             success:false,
             message:err.message
