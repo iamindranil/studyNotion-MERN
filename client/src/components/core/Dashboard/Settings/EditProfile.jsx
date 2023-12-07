@@ -45,7 +45,7 @@ export default function EditProfile() {
                 name="firstName"
                 id="firstName"
                 placeholder="Enter first name"
-                className="form-style"
+                className="form-style bg-brown-100"
                 {...register("firstName", { required: true })}
                 defaultValue={user?.firstName}
               />
@@ -64,7 +64,7 @@ export default function EditProfile() {
                 name="lastName"
                 id="lastName"
                 placeholder="Enter first name"
-                className="form-style"
+                className="form-style bg-brown-100"
                 {...register("lastName", { required: true })}
                 defaultValue={user?.lastName}
               />
@@ -85,7 +85,7 @@ export default function EditProfile() {
                 type="date"
                 name="dateOfBirth"
                 id="dateOfBirth"
-                className="form-style"
+                className="form-style bg-brown-100"
                 {...register("dateOfBirth", {
                   required: {
                     value: true,
@@ -112,7 +112,7 @@ export default function EditProfile() {
                 type="text"
                 name="gender"
                 id="gender"
-                className="form-style"
+                className="form-style bg-brown-100"
                 {...register("gender", { required: true })}
                 defaultValue={user?.additionalDetails?.gender}
               >
@@ -142,7 +142,7 @@ export default function EditProfile() {
                 name="contactNumber"
                 id="contactNumber"
                 placeholder="Enter Contact Number"
-                className="form-style"
+                className="form-style bg-brown-100"
                 {...register("contactNumber", {
                   required: {
                     value: true,
@@ -168,7 +168,7 @@ export default function EditProfile() {
                 name="about"
                 id="about"
                 placeholder="Enter Bio Details"
-                className="form-style"
+                className="form-style bg-brown-100"
                 {...register("about", { required: true })}
                 defaultValue={user?.additionalDetails?.about}
               />

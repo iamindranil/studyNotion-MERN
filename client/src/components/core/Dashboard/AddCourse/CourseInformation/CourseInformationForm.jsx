@@ -36,6 +36,7 @@ export default function CourseInformationForm() {
     const getCategories = async () => {
       setLoading(true)
       const categories = await fetchCourseCategories()
+      console.log(categories)
       if (categories.length > 0) {
         // console.log("categories", categories)
         setCourseCategories(categories)
@@ -140,12 +141,12 @@ export default function CourseInformationForm() {
     formData.append("courseName", data.courseTitle)
     formData.append("courseDescription", data.courseShortDesc)
     formData.append("price", data.coursePrice)
-    // formData.append("tag", JSON.stringify(data.courseTags))
+    formData.append("tag", JSON.stringify(data.courseTags))
     formData.append("whatYouWillLearn", data.courseBenefits)
     formData.append("category", data.courseCategory)
     formData.append("status", COURSE_STATUS.DRAFT)
     formData.append("instructions", JSON.stringify(data.courseRequirements))
-    // formData.append("thumbnailImage", data.courseImage)
+    formData.append("thumbnailImage", data.courseImage)
     setLoading(true)
     const result = await addCourseDetails(formData, token)
     if (result) {

@@ -18,12 +18,12 @@ const ContactUsForm = () => {
     console.log("Form Data - ", data)
     try {
       setLoading(true)
-      // const res = await apiConnector(
-      //   "POST",
-      //   contactusEndpoint.CONTACT_US_API,
-      //   data
-      // )
-      const res={status:"OK"}
+      const res = await apiConnector(
+        "POST",
+        contactusEndpoint.CONTACT_US_API,
+        data
+      )
+      // const res={status:"OK"}
       console.log("Email Res - ", res)
       setLoading(false)
     } catch (error) {
@@ -51,7 +51,7 @@ const ContactUsForm = () => {
     >
       <div className="flex flex-col gap-5 lg:flex-row">
         <div className="flex flex-col gap-2 lg:w-[48%]">
-          <label htmlFor="firstname" className="lable-style">
+          <label htmlFor="firstname" className="lable-style ">
             First Name
           </label>
           <input
@@ -59,7 +59,7 @@ const ContactUsForm = () => {
             name="firstname"
             id="firstname"
             placeholder="Enter first name"
-            className="form-style text-black"
+            className="form-style text-black bg-brown-100"
             {...register("firstname", { required: true })}
           />
           {errors.firstname && (
@@ -77,7 +77,7 @@ const ContactUsForm = () => {
             name="lastname"
             id="lastname"
             placeholder="Enter last name"
-            className="form-style text-black"
+            className="form-style text-black bg-brown-100"
             {...register("lastname")}
           />
         </div>
@@ -92,7 +92,7 @@ const ContactUsForm = () => {
           name="email"
           id="email"
           placeholder="Enter email address"
-          className="form-style text-black"
+          className="form-style text-black bg-brown-100"
           {...register("email", { required: true })}
         />
         {errors.email && (
@@ -112,7 +112,7 @@ const ContactUsForm = () => {
             <select
               name="dropdown"
               id="dropdown"
-              className="form-style text-black"
+              className="form-style text-black bg-brown-100"
               {...register("countrycode", { required: true })}
             >
               {CountryCode.map((ele, i) => {
@@ -130,7 +130,7 @@ const ContactUsForm = () => {
               name="phonenumber"
               id="phonenumber"
               placeholder="12345 67890"
-              className="form-style text-black"
+              className="form-style text-black bg-brown-100"
               {...register("phoneNo", {
                 required: {
                   value: true,
@@ -159,7 +159,7 @@ const ContactUsForm = () => {
           cols="30"
           rows="7"
           placeholder="Enter your message here"
-          className="form-style text-black"
+          className="form-style text-black bg-brown-100"
           {...register("message", { required: true })}
         />
         {errors.message && (
@@ -185,3 +185,22 @@ const ContactUsForm = () => {
 }
 
 export default ContactUsForm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

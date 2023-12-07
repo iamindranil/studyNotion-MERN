@@ -22,6 +22,8 @@ import { useSelector } from "react-redux";
 import AddCourse from "./components/core/Dashboard/AddCourse";
 import MyCourses from "./components/core/Dashboard/MyCourses";
 import EditCourse from "./components/core/Dashboard/EditCourse";
+import Catalog from "./pages/Catalog";
+import CourseDetails from "./pages/CourseDetails";
 
 
 
@@ -35,7 +37,9 @@ function App() {
    <div className="w=screen min-h-screen bg-richblack-900 flex flex-col font-inter">
     <Navbar />
     <Routes>
-      <Route path="/" element={<Home/>}/> 
+      <Route path="/" element={<Home/>}/>
+      <Route path="/catalog/:catalogName" element={<Catalog/>}/> 
+      <Route path="/courses/:courseId" element={<CourseDetails/>}/> 
       <Route path="/login" element={<OpenRoute><Login/></OpenRoute>}/>
       <Route path="/signup" element={<OpenRoute><Signup/></OpenRoute>}/>
       <Route path="/forgot-password" element={<OpenRoute><ForgotPassword/></OpenRoute>}/>
