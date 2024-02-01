@@ -31,7 +31,6 @@ const ViewCourse = () => {
     }, [courseId, token, dispatch]);
 
   return (
-    
     <div className=' flex w-screen'>
         <div className=''>
         <VideoDetailsSidebar setReviewModal={setReviewModal} />

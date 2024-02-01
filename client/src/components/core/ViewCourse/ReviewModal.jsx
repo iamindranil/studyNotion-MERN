@@ -7,6 +7,7 @@ import ReactStars from 'react-rating-stars-component';
 import { createRating } from '../../../services/operations/courseDetailsAPI';
 import { useParams } from 'react-router';
 
+
 const ReviewModal = ({setReviewModal}) => {
   const {user}= useSelector(state => state.profile);
   const {token} = useSelector(state => state.auth);
